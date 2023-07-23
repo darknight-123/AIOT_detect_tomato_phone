@@ -1,5 +1,7 @@
 # AIOT_detect_tomato_phone
 
+ API資料夾裡存放php寫成的sql呼叫，並傳送格式為Json
+
 
 登入畫面
 
