@@ -1,6 +1,6 @@
 # AIOT_detect_tomato_phone
 
- API資料夾裡存放php寫成的sql呼叫，並傳送格式為Json
+ Phone資料夾裡存放用php寫成的API，sql連線資料庫並傳送格式為Json
 
 
 登入畫面
