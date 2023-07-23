@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AIOT農作物監測</string>
+    <string name="welcome">歡迎使用者:</string>
+    <string name="account">帳號</string>
+    <string name="password">密碼</string>
+    <string name="temperature">天氣</string>
+    <string name="choose_date">日期選擇</string>
+    <string name="query">查詢</string>
+    <string name="growth">生長階段:</string>
+</resources>

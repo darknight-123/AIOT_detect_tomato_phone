@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="object">
+        <item>moisture</item>
+        <item>temperature</item>
+        <item>TomatoWorm</item>
+        <item>TabacooWorm</item>
+        <item>BeetWorm</item>
+        <item>Problem_leaf</item>
+        <item>None</item>
+        <item>Tomato</item>
+        <item>TomatoFlower</item>
+    </string-array>
+</resources>
