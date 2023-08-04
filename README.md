@@ -2,9 +2,9 @@
 
 專題的手機版本:https://github.com/darknight-123/AIOT_detect_tomato
 
+graduate_project_phone資料夾是Android studio
 
-
- Phone資料夾裡存放用php寫成的API，sql連線資料庫並傳送格式為Json
+Phone資料夾裡存放用php寫成的API，sql連線資料庫並傳送格式為Json
 
 
 登入畫面
