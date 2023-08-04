@@ -7,4 +7,6 @@
     <string name="choose_date">日期選擇</string>
     <string name="query">查詢</string>
     <string name="growth">生長階段:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

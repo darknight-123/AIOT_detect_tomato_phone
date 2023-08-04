@@ -1,6 +1,8 @@
 package com.example.graduate_project_phone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -10,10 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -37,7 +41,7 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
     private TextView text_growth,text_date;
     private LineChart chart;
     private Button query,date;
-    private String username="NOne";
+    private String username="None";
     private String default_raspberry="None",default_date="None",default_object="None";
     private ArrayList<Rasberry_pie>rasberry=new ArrayList<>();
     private String min_date="None";
@@ -46,7 +50,10 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
     private Calendar calendar = Calendar.getInstance();
     private Spinner spinner_ID,spinner_object;
     private String default_temperature;
+    private FragmentManager fmgr;
+    private Button chart_btn,image_btn;
     private ArrayList<Object>objects=new ArrayList<>();
+    private ImageView img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,11 +116,23 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
         spinner_object.setOnItemSelectedListener(this);
 
         default_object="moisture";
+
+        chart_btn=findViewById(R.id.chart_button);
+        image_btn=findViewById(R.id.image_button);
+        chart_btn.setOnClickListener(this);
+        image_btn.setOnClickListener(this);
+        img=findViewById(R.id.imageView2);
+
+
+
+
+        //圖表創建
         chart=findViewById(R.id.lineChart);
 
         chart.setData(getLineData(default_object));
         chart.notifyDataSetChanged();
         chart.invalidate();
+
     }
 
 
@@ -131,7 +150,7 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
             if(putData.startPut()){
                 if(putData.onComplete()){
                     String result=putData.getResult();
-                    text_growth.setText("生長階段:");
+                    text_growth.setText("生長階段:無此資料");
                     switch(result){
                         case "0":
                             text_growth.setText("生長階段:發芽期");
@@ -174,7 +193,7 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
                     for(int i=0;i<array.length();i++){
                         JSONObject object=array.getJSONObject(i);
 
-                        objects.add(new Object(object.getString("Time"),Integer.valueOf(object.getString("moisture")),0,Integer.valueOf(object.getString("TomatoWorm")),Integer.valueOf(object.getString("BeetWorm")),Integer.valueOf(object.getString("TabaccoWorm")),Integer.valueOf(object.getString("Problems")),Integer.valueOf(object.getString("None")),Integer.valueOf(object.getString("Tomato")),Integer.valueOf(object.getString("TomatoFlower"))));
+                        objects.add(new Object(object.getString("Time"),Integer.valueOf(object.getString("moisture")),object.getString("Picture"),0,Integer.valueOf(object.getString("TomatoWorm")),Integer.valueOf(object.getString("BeetWorm")),Integer.valueOf(object.getString("TabaccoWorm")),Integer.valueOf(object.getString("Problems")),Integer.valueOf(object.getString("None")),Integer.valueOf(object.getString("Tomato")),Integer.valueOf(object.getString("TomatoFlower"))));
 
                     }
 
@@ -278,6 +297,7 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
         }
     }
     //圖表建造
+
     private LineData getLineData(String object_name){
         LineDataSet dataSetA = new LineDataSet(getChartData(object_name), "LabelA");
 
@@ -335,15 +355,19 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        ArrayAdapter<CharSequence>adapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item);
         switch (v.getId()){
             case R.id.query:
 
-                Toast.makeText(this,"Date="+default_raspberry,Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"Date="+default_raspberry,Toast.LENGTH_LONG).show();
                 getObject();
                 getGrowth();
+
                 chart.setData(getLineData(default_object));
                 chart.notifyDataSetChanged();
                 chart.invalidate();
+                chart_btn.performClick();
+
                 break;
             case R.id.date_picker:
                 DatePickerDialog dialog = new DatePickerDialog(Condition.this,
@@ -366,6 +390,38 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
 
                 dialog.show();
                 break;
+            case R.id.chart_button:
+                chart.setVisibility(View.VISIBLE);
+                img.setVisibility(View.GONE);
+
+                adapter=ArrayAdapter.createFromResource(this,
+                        R.array.object,
+                        android.R.layout.simple_spinner_dropdown_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner_object.setAdapter(adapter);
+                break;
+            case R.id.image_button:
+
+                chart.setVisibility(View.GONE);
+                img.setVisibility(View.VISIBLE);
+                String Time[]=new String[objects.size()];
+                if(objects.size()==0){
+                    Time=new String[1];
+                    Time[0]="無此資料";
+                    img.setImageResource(0);
+                }
+                else {
+                    for (int i = 0; i < objects.size(); i++) {
+                        Time[i] = objects.get(i).getTime();
+                    }
+
+                    Glide.with(this).load("http://10.0.2.2:80/tomato/"+objects.get(0).getPicture_url()).into(img);
+                }
+
+                ArrayAdapter<CharSequence>adapter1=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,Time);
+                spinner_object.setAdapter(adapter1);
+
+                break;
         }
     }
 
@@ -378,13 +434,22 @@ public class Condition extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(parent.getId()==R.id.object){
-            default_object= (String) spinner_object.getSelectedItem();
-            Toast.makeText(this,default_object,Toast.LENGTH_LONG).show();
+            if(chart.getVisibility()==View.VISIBLE) {
+                default_object= (String) spinner_object.getSelectedItem();
+            }
+            else{
+
+                Glide.with(this).load("http://10.0.2.2:80/tomato/"+objects.get(position).getPicture_url()).into(img);
+            }
+
         }
         else if(parent.getId()==R.id.spinner){
-            default_raspberry= String.valueOf(spinner_ID.getSelectedItem());
-            getObject();
+
+                default_raspberry = String.valueOf(spinner_ID.getSelectedItem());
+                getObject();
+
         }
+
         chart.setData(getLineData(default_object));
         chart.notifyDataSetChanged();
         chart.invalidate();
