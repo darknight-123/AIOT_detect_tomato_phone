@@ -35,4 +35,10 @@
 
 可選擇的需要帳戶本身在資料庫有的日期、機台、物種等內容查看，並以報表呈現數量等
 
-![image](https://github.com/darknight-123/AIOT_detect_tomato_phone/assets/81505859/8ba9a8b2-1986-40a2-96c8-3b02d12a1500)
+![image](https://github.com/darknight-123/AIOT_detect_tomato_phone/assets/81505859/e6b45892-f0ff-4de5-864e-f97c340660b3)
+
+
+可查看個時間點照片
+
+![image](https://github.com/darknight-123/AIOT_detect_tomato_phone/assets/81505859/36324ea2-5ad0-4623-9b92-e966abb076f8)
+
