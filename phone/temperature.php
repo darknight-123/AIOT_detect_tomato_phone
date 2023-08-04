@@ -5,7 +5,7 @@
 		require_once '../conn.php';
 		$ID=$_POST['ID'];
 		$Day=$_POST['Day'];
-		$sql="SELECT `Time`,`Tempature` FROM `location_tempature` WHERE `RaspberryID`='$ID' and `Day`='$Day'";
+		$sql="SELECT `Time`,`Tempature` FROM `location_tempature` WHERE `RaspberryID`='$ID' and `Day`='$Day' ORDER BY `Day`,`Time`";
 		$result=$conn->query($sql);
 		
 		while ($row = $result->fetch_assoc()) {

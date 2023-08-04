@@ -6,7 +6,7 @@
 		require_once "../conn.php";
 		$ID=$_POST['ID'];
 		$Day=$_POST['Day'];
-		$sql="SELECT `Growth` FROM `tomato_growth` WHERE '$ID'=`RaspberryID` and '$Day'=`Day`";
+		$sql="SELECT `Growth` FROM `tomato_growth` WHERE '$ID'=`RaspberryID` and '$Day'=`Day` ORDER BY `Day`";
 		$result=$conn->query($sql);
 		
 		$row = $result->fetch_assoc();

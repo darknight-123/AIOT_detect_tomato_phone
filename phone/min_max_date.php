@@ -3,7 +3,7 @@
 if(isset($_POST['ID'])){
 	require_once "../conn.php";
 	$ID=$_POST['ID'];
-	$sql="SELECT `Day` FROM `conditions` WHERE '$ID'=`RaspberryID`";
+	$sql="SELECT `Day` FROM `conditions` WHERE '$ID'=`RaspberryID` ORDER BY `Day`,`Time`";
 	$result=$conn->query($sql);
 	
 	while ($row = $result->fetch_assoc()) {
